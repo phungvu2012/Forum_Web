@@ -3,7 +3,7 @@ from login.models import Account
 from django.http import HttpResponseRedirect
 # ADD 
 from .forms import CreateGroupForm, JoinGroupForm
-from .models import Group, GroupHasAccount, Post
+from .models import Group, GroupHasAccount, Post, Comment
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 def listgroup(request):
@@ -32,11 +32,26 @@ def detailGroup(request, id):
         if joinGroup.is_valid():
             joinGroup.save()
             return HttpResponseRedirect(request.path_info)
+
     try:
         checkUserInGroup = GroupHasAccount.objects.get(groupId_id=id, userName_id = request.user.id)
     except ObjectDoesNotExist:
         checkUserInGroup = False
     if checkUserInGroup:
         checkUserInGroup = True
-    posts = Post.objects.filter(groupId_id = id);
-    return render(request, "pages/detailgroup.html", { "group": Group.objects.get(id=id), "Posts": posts, 'display': checkUserInGroup, 'joinGroup': joinGroup});
+
+    infPosts = []
+    try:
+        posts = Post.objects.filter(groupId_id = id)
+    except ObjectDoesNotExist:
+        posts = None
+    print("Posts: ", posts)
+    for post in posts:
+        try:
+            comments = Comment.objects.filter(postId_id = post.id)
+            print("Comments: ", comments)
+        except ObjectDoesNotExist:
+            comments = None
+        infPosts.append({'post': post, 'comments': comments})
+
+    return render(request, "pages/detailgroup.html", { "group": Group.objects.get(id=id), "ListPosts": infPosts, 'display': checkUserInGroup, 'joinGroup': joinGroup});

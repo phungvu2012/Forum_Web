@@ -56,7 +56,7 @@ class Comment(models.Model):
     objects = models.Manager()
     id = models.AutoField(primary_key=True)
     content = models.TextField(default='')
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    userId = models.ForeignKey(User, on_delete=models.CASCADE)
     postId = models.ForeignKey(Post, on_delete=models.CASCADE)
     timeComment = models.DateField(auto_now_add=True)
 

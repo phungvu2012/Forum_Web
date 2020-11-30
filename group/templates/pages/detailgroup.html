@@ -1,23 +1,33 @@
 {% extends "pages/base.html" %}
 {% block style %}
     .post {
-        height: 500px;
-        border: 1px solid #d3d3d3;
+        {% comment %} height: 500px; {% endcomment %}
+        border: 1px solid #f1f1f1;
         width: 100%;
         overflow: hidden;
         margin-bottom: 20px;
-        background-color: #f1f1f1;
+        background-color: #fff;
+        border-radius: 20px;
+        padding: 10px 20px;
+        box-sizing: border-box;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .morecontent span {
+        display: none;
+    }
+    .morelink {
+        display: block;
     }
 {% endblock  %}
 {% block content %}
     <h3> {{ group.name }} </h3>
     <h6> {{ group.date }} </h6>
     {% if display %}
-        {% for post in Posts %}
+        {% for post in ListPosts %}
             <div class="post">
                 <div> 
-                    <p> {{post.content|safe|linebreaks}}</p>
-                    <img src="/media/{{post.image}}" alt="" style="width: 100%"/>
+                    <div class="more"> {{post.post.content|linebreaksbr}} </div>
+                    <img src="/media/{{post.post.image}}" alt="" style="width: 100%"/>
                 </div>
             </div>
         {% endfor %}
@@ -31,4 +41,46 @@
             <input type="submit" value="join">
         </form>
     {% endif %}
+{% endblock  %}
+
+{% block scriptJS %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Configure/customize these variables.
+    var showChar = 100;  // How many characters are shown by default
+    var ellipsestext = "...";
+    var moretext = "Xem tiếp";
+    var lesstext = "Thu gọn";
+    
+
+    $('.more').each(function() {
+        var content = $(this).html();
+ 
+        if(content.length > showChar) {
+ 
+            var c = content.substr(0, showChar);
+            var h = content.substr(showChar, content.length - showChar);
+ 
+            var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a></span>';
+ 
+            $(this).html(html);
+        }
+ 
+    });
+ 
+    $(".morelink").click(function(){
+        if($(this).hasClass("less")) {
+            $(this).removeClass("less");
+            $(this).html(moretext);
+        } else {
+            $(this).addClass("less");
+            $(this).html(lesstext);
+        }
+        $(this).parent().prev().toggle();
+        $(this).prev().toggle();
+        return false;
+    });
+});
+</script>
 {% endblock  %}

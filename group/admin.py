@@ -39,7 +39,7 @@ class AccountReportPostAdmin(admin.ModelAdmin):
 admin.site.register(AccountReportPost, AccountReportPostAdmin)
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['id', 'content', 'username', 'postId', 'timeComment']
+    list_display = ['id', 'content', 'userId', 'postId', 'timeComment']
     list_filter = ['postId']
     search_fields = ['username']
 admin.site.register(Comment, CommentAdmin)
