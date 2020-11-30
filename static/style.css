@@ -97,9 +97,9 @@ html, body{
 
 .nav__tap__bottom .menu {
 	position: absolute;
-	top: 0px;
+	top: -40px;
 	left: 100px;
-	padding: 10px 20px;
+	/* padding: 10px 20px; */
 	background-color: #fff;
 	width: 200px; 
 	box-sizing: 0 5px 25px rgba(0, 0, 0, .1);
@@ -110,7 +110,7 @@ html, body{
 }
 
 .nav__tap__bottom .menu.active {
-    top: 0px;
+    top: -40px;
     left: 70px;
 	visibility: visible;
 	opacity: 1;
@@ -119,18 +119,20 @@ html, body{
 .nav__tap__bottom .menu::before {
 	content: "";
 	position: absolute;
-	top: 12px;
+	top: 55px;
 	left: -8px;
 	width: 20px;
 	height: 20px;
 	background-color: #fff;
 	transform: rotate(45deg);
 }
-/* .nav__tap__bottom .menu h3 {
+
+.nav__tap__bottom .menu h3 {
 	width: 100%;
 	text-align: center;
 	font-size: 18px;
-	padding: 20px 0;
+	/* padding: 20px 0; */
+	padding: 10px 0 5px;
 	font-weight: 500;
 	font-size: 18px;
 	color: #555;
@@ -141,7 +143,11 @@ html, body{
 	font-size: 14px;
 	color: #cecece;
 	font-weight: 400;
-} */
+}
+
+.nav__tap__bottom .menu ul {
+	margin-bottom: 5px;
+}
 
 .nav__tap__bottom .menu ul li {
 	list-style: none;

@@ -9,10 +9,6 @@
     <title>{% block title %}  {% endblock  %}</title>
     <link rel="shortcut icon" type="image/png" href="{% static 'logo.png' %}"/>
     <script src="https://kit.fontawesome.com/bb7791bf4b.js" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <style>
     {% block style %}
     
@@ -35,7 +31,7 @@
                         </a>
                     </li>
                     <li id="group" class="nav-item" >
-                        <a class="nav-link" href="#"> 
+                        <a class="nav-link" href="{% url 'group' %}"> 
                             <i class="fas fa-users" title="Nhóm"></i>
                         </a>
                     </li>
@@ -50,12 +46,14 @@
                 {% if user.username %}
                 <div class="profile" onclick="menuToggle();">
                     {% block imageProfile %}
-                        
                     {% endblock  %}
                 </div>
                 <div class="menu">
-                    <!-- <h3>Some one <br> <span> Website Design </span></h3> -->
-                    <ul style="margin: 0;">
+                {% block username %}
+                
+                {% endblock  %}
+                    {% comment %} <h3>Some one <br> <span> Website Design </span></h3> {% endcomment %}
+                    <ul>
                         <li> <img src="{% static 'log-out.png' %}"> <a href=" {% url 'logout' %}"> Logout </a></li>
                     </ul>
                 </div>
@@ -66,11 +64,11 @@
             </nav>
         </div>
         <div class="row">
-            <div class="col-lg-3" style="position: fixed; padding: 0;">
-                <div class="aside-nav" >
-                    <div class="section">
-
-                    </div>
+            <div class="col-lg-3" style="position: fixed; padding: 0 0 0 var(--main-nav);">
+                <div class="aside-nav" style="overflow-y: scroll; padding: 5px 2px; box-sizing: border-box;">
+                    {% block aside %}
+                    
+                    {% endblock  %}
                 </div>
             </div>
             <div class="col-lg-9" style="position: absolute; right: 0; background-color: azure; height: 100vh;">
@@ -88,7 +86,7 @@
 			toggleMenu.classList.toggle('active')
 		}
 	</script>
-    <{% block scriptJS %}
+    {% block scriptJS %}
 
     {% endblock  %}
 </body>

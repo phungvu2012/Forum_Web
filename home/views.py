@@ -12,5 +12,6 @@ def index(request):
     account = Account.objects.get(user=request.user)
     avatar = 'media/{}'.format(account.avatar)
     # Data send font
-    data = {'avatar': avatar}
+    name = request.user.first_name + request.user.last_name
+    data = {'avatar': avatar, 'name': name}
     return render(request,'pages/home.html', data)
