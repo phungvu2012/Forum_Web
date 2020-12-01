@@ -22,3 +22,15 @@ class JoinGroupForm(forms.Form):
         super().__init__(*args, **kwargs)
     def save(self):
         AccountApplyGroup.objects.create(groupId_id=self.groupId, userName_id=self.authorId)
+
+class CommentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.authorId = kwargs.pop('userIdPara', None)
+        super().__init__(*args, **kwargs)
+    postId = forms.IntegerField()
+    class Meta: 
+        model = Comment
+        fields = ["content"]
+    def save(self):
+        print('save')
+        Comment.objects.create(content=self.cleaned_data["content"], postId_id=self.cleaned_data["postId"], userId_id=self.authorId)

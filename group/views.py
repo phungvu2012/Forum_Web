@@ -2,7 +2,7 @@ from django.shortcuts import render
 from login.models import Account
 from django.http import HttpResponseRedirect
 # ADD 
-from .forms import CreateGroupForm, JoinGroupForm
+from .forms import CreateGroupForm, JoinGroupForm, CommentForm
 from .models import Group, GroupHasAccount, Post, Comment
 from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
@@ -27,12 +27,19 @@ def listgroup(request):
 
 def detailGroup(request, id):
     joinGroup = JoinGroupForm()
+    commentForm = CommentForm()
     if(request.method == "POST"):
-        joinGroup = JoinGroupForm(request.POST, userIdPara = request.user.id, groupIdPara = id)
-        if joinGroup.is_valid():
-            joinGroup.save()
-            return HttpResponseRedirect(request.path_info)
-
+        if request.POST.get("sub") == 'Join':
+            joinGroup = JoinGroupForm(request.POST, userIdPara = request.user.id, groupIdPara = id)
+            if joinGroup.is_valid():
+                joinGroup.save()
+                return HttpResponseRedirect(request.path_info)
+        if request.POST.get("sub") == 'Đăng':
+            print('hello')
+            commentForm = CommentForm(request.POST, userIdPara=request.user.id)
+            if commentForm.is_valid():
+                commentForm.save()
+                return HttpResponseRedirect(request.path_info)
     try:
         checkUserInGroup = GroupHasAccount.objects.get(groupId_id=id, userName_id = request.user.id)
     except ObjectDoesNotExist:
@@ -49,9 +56,9 @@ def detailGroup(request, id):
     for post in posts:
         try:
             comments = Comment.objects.filter(postId_id = post.id)
-            print("Comments: ", comments)
+            # print("Comments: ", comments)
         except ObjectDoesNotExist:
             comments = None
         infPosts.append({'post': post, 'comments': comments})
 
-    return render(request, "pages/detailgroup.html", { "group": Group.objects.get(id=id), "ListPosts": infPosts, 'display': checkUserInGroup, 'joinGroup': joinGroup});
+    return render(request, "pages/detailgroup.html", { "group": Group.objects.get(id=id), "ListPosts": infPosts, 'display': checkUserInGroup, 'joinGroup': joinGroup, "CommentForm": commentForm});
